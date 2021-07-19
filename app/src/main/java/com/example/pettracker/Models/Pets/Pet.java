@@ -1,5 +1,11 @@
 package com.example.pettracker.Models.Pets;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Parcel
 public class Pet {
@@ -45,4 +51,32 @@ public class Pet {
     }
 
     public String getUrlImage() { return urlImage; }
+
+    public void setPetName(String petName) { this.petName = petName; }
+
+    public void setBreed(String breed) { this.breed = breed; }
+
+    public void setAge(int age) { this.age = age; }
+
+    public void setUrlImage(String urlImage) { this.urlImage = urlImage; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public static List<Pet> fromJsonArray(JSONArray jsonArray) throws JSONException {
+        List<Pet> pets = new ArrayList<>();
+        for(int i = 0; i < jsonArray.length(); i++)
+            pets.add(fromJson(jsonArray.getJSONObject(i)));
+
+        return pets;
+    }
+
+    private static Pet fromJson(JSONObject jsonObject) throws JSONException{
+        Pet pet = new Pet();
+        pet.setBreed(jsonObject.getString("name"));
+        pet.setDescription(jsonObject.getString("temperament"));
+        pet.setUrlImage(jsonObject.getJSONObject("image").getString("url"));
+
+        return pet;
+    }
+
 }

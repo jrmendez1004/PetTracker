@@ -42,23 +42,18 @@ public class AddDogActivity extends AppCompatActivity {
     }
 
     public void loadDogBreeds(int page) {
-        DogApiClient client = new DogApiClient(this);
+        DogApiClient client = new DogApiClient();
         client.getDogBreeds(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int i, Headers headers, JSON json) {
                 JSONArray jsonArray = json.jsonArray;
-                for(int j = 0; j < jsonArray.length(); j++) {
-                    try {
-                        JSONObject jsonObject = jsonArray.getJSONObject(j);
-                        dogBreeds.add(new Pet(jsonObject.getString("name"), jsonObject.getJSONObject("image").getString("url"), jsonObject.getString("temperament")));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    dogBreeds.addAll(Pet.fromJsonArray(jsonArray));
+                    adapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                adapter.notifyDataSetChanged();
             }
-
-
             @Override
             public void onFailure(int i, Headers headers, String s, Throwable throwable) {
                 Log.e("AddDogActivity", "Wrong API request", throwable);
