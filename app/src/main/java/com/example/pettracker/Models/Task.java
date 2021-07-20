@@ -2,16 +2,19 @@ package com.example.pettracker.Models;
 
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+
 import org.parceler.Parcel;
 
-import com.parse.ParseObject;
-
-@Parcel
-//@ParseClassName("Task")
-public class Task {
+@Parcel(analyze = Task.class)
+@ParseClassName("Task")
+public class Task extends ParseObject{
     public static final String KEY_TIME = "timeAndDate";
     public static final String KEY_COLOR = "color";
     public static final String KEY_OWNER_ID = "ownerId";
+    public static final String KEY_DESCRIPTION = "description";
 
     public Task(){
     }
@@ -26,50 +29,36 @@ public class Task {
     String ownerId;
     String TaskDescription;
 
-    public String getTaskDescription() { return TaskDescription; }
-
-    public String getColor() {
-        return color;
+    //Server Methods
+    public String getTime(){
+        return getString(KEY_TIME);
     }
 
-    public String getOwnerId() {
-        return ownerId;
+    public void setTime(String time){
+        put(KEY_TIME, time);
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public String getColor(){
+        return getString(KEY_COLOR);
     }
 
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
+    public void setColor(String color){
+        put(KEY_COLOR, color);
+    }
+
+    public String getOwnerId(){
+        return getString(KEY_OWNER_ID);
+    }
+
+    public void setOwnerId(String ownerId){
+        put(KEY_OWNER_ID, ownerId);
     }
 
     public void setTaskDescription(String taskDescription) {
-        TaskDescription = taskDescription;
+        put(KEY_DESCRIPTION, taskDescription);
     }
 
-    //Server Methods
-//    public String getTime(){
-//        return getString(KEY_TIME);
-//    }
-//
-//    public void setTime(String time){
-//        put(KEY_TIME, time);
-//    }
-//
-//    public String getColor(){
-//        return getString(KEY_COLOR);
-//    }
-//
-//    public void setColor(String color){
-//        put(KEY_COLOR, color);
-//    }
-//
-//    public String getOwnerId(){
-//        return getString(KEY_OWNER_ID);
-//    }
-//
-//    public void setOwnerId(String ownerId){
-//        put(KEY_OWNER_ID, ownerId);
-//    }
+    public String getTaskDescription() {
+        return getString(KEY_DESCRIPTION);
+    }
 }

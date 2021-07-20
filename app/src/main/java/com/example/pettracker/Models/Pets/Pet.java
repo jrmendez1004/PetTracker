@@ -1,4 +1,7 @@
 package com.example.pettracker.Models.Pets;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,76 +10,47 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 
-@Parcel
-public class Pet {
+@Parcel(analyze = Pet.class)
+@ParseClassName("Pet")
+public class Pet extends ParseObject {
     public static int DEFAULT_AGE = 999; //Set Age for unknown age of dog
-
-    String petName;
-    String breed;
-    int age = DEFAULT_AGE;
-    String houseHoldId;
-    String urlImage;
-    String description;
+    public static final String KEY_NAME = "petName";
+    public static final String KEY_BREED = "breed";
+    public static final String KEY_AGE = "age";
+    public static final String KEY_HOUSEHOLD_ID = "householdID";
+    public static final String KEY_IMAGE_URL = "urlImage";
+    public static final String KEY_DESCRIPTION = "description";
 
     public Pet() {
     }
 
-    public Pet(String petName, String breed, int age, String houseHoldId) {
-        this.petName = petName;
-        this.breed = breed;
-        this.age = age;
-        this.houseHoldId = houseHoldId;
-    }
-
-    public Pet(String breed, String urlImage, String description) {
-        this.breed = breed;
-        this.urlImage = urlImage;
-        this.description = description;
-    }
-
     public String getPetName() {
-        return petName;
+        return getString(KEY_NAME);
     }
 
     public String getBreed() {
-        return breed;
+        return getString(KEY_BREED);
     }
 
     public int getAge() {
-        return age;
+        return getInt(KEY_AGE);
     }
 
     public String getHouseHoldId() {
-        return houseHoldId;
+        return getString(KEY_HOUSEHOLD_ID);
     }
 
-    public String getUrlImage() { return urlImage; }
+    public String getUrlImage() { return getString(KEY_IMAGE_URL); }
 
-    public void setPetName(String petName) { this.petName = petName; }
 
-    public void setBreed(String breed) { this.breed = breed; }
+    public void setPetName(String petName) {  put(KEY_NAME, petName); }
 
-    public void setAge(int age) { this.age = age; }
+    public void setBreed(String breed) { put(KEY_BREED, breed); }
 
-    public void setUrlImage(String urlImage) { this.urlImage = urlImage; }
+    public void setAge(int age) { put(KEY_AGE, age); }
 
-    public void setDescription(String description) { this.description = description; }
+    public void setUrlImage(String urlImage) { put(KEY_IMAGE_URL, urlImage); }
 
-    public static List<Pet> fromJsonArray(JSONArray jsonArray) throws JSONException {
-        List<Pet> pets = new ArrayList<>();
-        for(int i = 0; i < jsonArray.length(); i++)
-            pets.add(fromJson(jsonArray.getJSONObject(i)));
-
-        return pets;
-    }
-
-    private static Pet fromJson(JSONObject jsonObject) throws JSONException{
-        Pet pet = new Pet();
-        pet.setBreed(jsonObject.getString("name"));
-        pet.setDescription(jsonObject.getString("temperament"));
-        pet.setUrlImage(jsonObject.getJSONObject("image").getString("url"));
-
-        return pet;
-    }
+    public void setDescription(String description) { put(KEY_DESCRIPTION, description); }
 
 }

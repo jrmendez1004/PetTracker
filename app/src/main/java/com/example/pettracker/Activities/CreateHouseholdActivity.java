@@ -23,7 +23,6 @@ import java.util.List;
 public class CreateHouseholdActivity extends AppCompatActivity {
     Button btnConfirm;
     EditText etNumOwners;
-    List<Owner> owners;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,6 @@ public class CreateHouseholdActivity extends AppCompatActivity {
 
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         etNumOwners = (EditText) findViewById(R.id.etNumOwners);
-        owners = new ArrayList<>();
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +47,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
             return;
         }
 
-        if(etNumOwners.getText() == null) {
+        if(etNumOwners.getText().toString() == "null") {
             Toast.makeText(CreateHouseholdActivity.this, "You must enter a number", Toast.LENGTH_SHORT).show();
         }
 
@@ -76,15 +74,16 @@ public class CreateHouseholdActivity extends AppCompatActivity {
                 for(int i = 0; i < ownerNames.size(); i++) {
                     if(ownerNames.get(i).getText().toString().equals("")) { //Make sure every text field has a name
                         Toast.makeText(CreateHouseholdActivity.this, "Enter a name for every owner", Toast.LENGTH_SHORT).show();
-                        owners.clear();
+                        //owners.clear(); needs to clear all owners that were just put in, owners with the household id
                         return;
                     }
 
-                    owners.add(new Owner(ownerNames.get(i).getText().toString(), "house1"));
+                    //need to add owners with the household id to the database
                 }
+
+                //Moves along in Household creation
                 finish();
                 Intent intent = new Intent(CreateHouseholdActivity.this, AddDogActivity.class);
-                intent.putExtra("owners", Parcels.wrap(owners));
                 startActivity(intent);
             }
         });

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.pettracker.Adapters.DogBreedAdapter;
 import com.example.pettracker.DogApiClient;
+import com.example.pettracker.Models.Pets.DisplayPets;
 import com.example.pettracker.Models.Pets.Pet;
 import com.example.pettracker.R;
 
@@ -24,7 +25,7 @@ import okhttp3.Headers;
 
 public class AddDogActivity extends AppCompatActivity {
     RecyclerView rvDogBreeds;
-    List<Pet> dogBreeds;
+    List<DisplayPets> dogBreeds;
     DogBreedAdapter adapter;
 
     @Override
@@ -48,7 +49,7 @@ public class AddDogActivity extends AppCompatActivity {
             public void onSuccess(int i, Headers headers, JSON json) {
                 JSONArray jsonArray = json.jsonArray;
                 try {
-                    dogBreeds.addAll(Pet.fromJsonArray(jsonArray));
+                    dogBreeds.addAll(DisplayPets.fromJsonArray(jsonArray));
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

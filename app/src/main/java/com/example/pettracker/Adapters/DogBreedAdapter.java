@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.pettracker.Activities.MainActivity;
+import com.example.pettracker.Models.Pets.DisplayPets;
 import com.example.pettracker.Models.Pets.Pet;
 import com.example.pettracker.R;
 
@@ -30,10 +31,10 @@ import java.util.List;
 
 public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHolder> {
     Context context;
-    List<Pet> pets;
+    List<DisplayPets> pets;
     List<String> genders = new ArrayList<>();
 
-    public DogBreedAdapter(Context context, List<Pet> pets) {
+    public DogBreedAdapter(Context context, List<DisplayPets> pets) {
         this.context = context;
         this.pets = pets;
     }
@@ -47,7 +48,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull DogBreedAdapter.ViewHolder holder, int position) {
-        Pet pet = pets.get(position);
+        DisplayPets pet = pets.get(position);
         holder.bind(pet);
     }
 
@@ -79,12 +80,23 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             });
         }
 
+        public void bind(DisplayPets pet) {
+            tvBreed.setText(pet.breed);
+            int radius = 50;
+            Glide.with(itemView)
+                    .load(pet.urlImage)
+                    .centerInside()
+                    .transform(new RoundedCorners(radius))
+                    .into(ivBreedImage);
+        }
+
         private void onBreedClick() {
             int position = getAdapterPosition();
             if(position != RecyclerView.NO_POSITION) {
-                Pet pet = pets.get(position);
+                DisplayPets pet = pets.get(position); //Get information from card
                 showDetailsAlert();
                 Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
             }
         }
 
@@ -106,7 +118,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
 
                     //setup gender select
                     Spinner spinner = (Spinner) alertDialog.findViewById(R.id.spinGender);
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(alertDialog.getContext(), android.R.layout.simple_spinner_item, genders);
+                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(messageView.getContext(), R.array.gender_array, android.R.layout.simple_spinner_item);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spinner.setAdapter(adapter);
                     spinner.setOnItemSelectedListener(new SpinnerActivity());
@@ -118,16 +130,6 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             });
 
             alertDialog.show();
-        }
-
-        public void bind(Pet pet) {
-            tvBreed.setText(pet.getBreed());
-            int radius = 50;
-            Glide.with(itemView)
-                    .load(pet.getUrlImage())
-                    .centerInside()
-                    .transform(new RoundedCorners(radius))
-                    .into(ivBreedImage);
         }
 
         public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {

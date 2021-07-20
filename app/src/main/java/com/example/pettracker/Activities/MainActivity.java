@@ -37,26 +37,13 @@ public class MainActivity extends AppCompatActivity {
     TextView calViewType;
     ImageView ivAddTask;
     DogsAdapter adapter;
-    List<Pet> pets;
+    List<Pet> pets; //Need to get list of pets from database
 
-    Owner tempOwner;
-    Pet tempPet;
-    Task tempTask;
-    List<Task> tempList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        pets = new ArrayList<>();
-        tempOwner = new Owner("Jon", "House1");
-        tempPet = new Pet("Max", "Bulldog", 4, "House1");
-        tempTask = new Task("black", "owner1", "Do something");
-        tempList = new ArrayList<>();
-        tempList.add(tempTask);
-        for(int i = 0; i < 5; i++)
-            pets.add(tempPet);
 
         rvCal = (RecyclerView) findViewById(R.id.rvCal);
         rvDogList = (RecyclerView) findViewById(R.id.rvDogList);
@@ -90,16 +77,15 @@ public class MainActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    //Need to get owner from database
     private void goOwnerDetails() {
         Intent intent = new Intent(this, OwnerInfoActivity.class);
-        intent.putExtra("owner", Parcels.wrap(tempOwner));
-        intent.putExtra("tasks", Parcels.wrap(tempTask));
         startActivity(intent);
     }
 
+    //need to get Dog from database
     private void goDogDetails() {
         Intent intent = new Intent(this, PetInfoActivity.class);
-        intent.putExtra("Pet",Parcels.wrap(tempPet));
         startActivity(intent);
     }
 }

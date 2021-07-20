@@ -49,11 +49,6 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Task> list){
-        tasks.addAll(list);
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView tvTask;
         TextView tvTime;
