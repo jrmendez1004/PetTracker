@@ -1,6 +1,7 @@
 package com.example.pettracker.Models.Pets;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,7 @@ public class Pet extends ParseObject {
     public static final String KEY_HOUSEHOLD_ID = "householdID";
     public static final String KEY_IMAGE_URL = "urlImage";
     public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_WEIGHT = "weight";
 
     public Pet() {
     }
@@ -40,7 +42,9 @@ public class Pet extends ParseObject {
         return getString(KEY_HOUSEHOLD_ID);
     }
 
-    public String getUrlImage() { return getString(KEY_IMAGE_URL); }
+    public ParseUser getUrlImage() { return getParseUser(KEY_IMAGE_URL); }
+
+    public int getWeight() { return getInt(KEY_WEIGHT); }
 
 
     public void setPetName(String petName) {  put(KEY_NAME, petName); }
@@ -52,5 +56,9 @@ public class Pet extends ParseObject {
     public void setUrlImage(String urlImage) { put(KEY_IMAGE_URL, urlImage); }
 
     public void setDescription(String description) { put(KEY_DESCRIPTION, description); }
+
+    public void setWeight(int weight) { put(KEY_WEIGHT, weight); }
+
+    public void setHouseholdId(ParseUser householdId) { put(KEY_HOUSEHOLD_ID, householdId); }
 
 }

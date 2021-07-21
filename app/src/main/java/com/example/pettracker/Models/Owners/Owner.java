@@ -12,11 +12,11 @@ import java.util.List;
 @Parcel(analyze = Owner.class)
 @ParseClassName("Owner")
 public class Owner extends ParseObject {
-    public static final String KEY_OWNER_NAME = "ownerName";
-    public static final String KEY_HOUSEHOLD_ID = "householdID";
-
     public Owner() {
     }
+
+    public static final String KEY_OWNER_NAME = "ownerName";
+    public static final String KEY_HOUSEHOLD_ID = "householdID";
 
     public String getOwnerName() {
         return getString(KEY_OWNER_NAME);

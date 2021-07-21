@@ -51,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
                     if(e == null) {
                         finish();
                         Toast.makeText(SignupActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                        Intent intent = new Intent(SignupActivity.this, CreateHouseholdActivity.class);
                         startActivity(intent);
                     }
                     else {

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -21,10 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.pettracker.Activities.LoginActivity;
 import com.example.pettracker.Activities.MainActivity;
 import com.example.pettracker.Models.Pets.DisplayPets;
 import com.example.pettracker.Models.Pets.Pet;
 import com.example.pettracker.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +37,6 @@ import java.util.List;
 public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHolder> {
     Context context;
     List<DisplayPets> pets;
-    List<String> genders = new ArrayList<>();
 
     public DogBreedAdapter(Context context, List<DisplayPets> pets) {
         this.context = context;
@@ -94,20 +98,23 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             int position = getAdapterPosition();
             if(position != RecyclerView.NO_POSITION) {
                 DisplayPets pet = pets.get(position); //Get information from card
-                showDetailsAlert();
-                Intent intent = new Intent(context, MainActivity.class);
-                context.startActivity(intent);
+                showDetailsAlert(pet);
             }
         }
 
-        private void showDetailsAlert() {
+        private void showDetailsAlert(DisplayPets displayPets) {
             View  messageView = LayoutInflater.from(context).inflate(R.layout.message_item, null);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
             alertDialogBuilder.setView(messageView);
             final AlertDialog alertDialog = alertDialogBuilder.create();
 
-            genders.add("Male");
-            genders.add("Female");
+            //setup gender select
+            Spinner spinner = (Spinner) messageView.findViewById(R.id.spinGender);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context, R.array.gender_array, android.R.layout.simple_spinner_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new SpinnerActivity());
+
             alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -116,12 +123,25 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                     age = ((EditText) alertDialog.findViewById(R.id.etPetAge)).getText().toString();
                     weight = ((EditText) alertDialog.findViewById(R.id.etPetWeight)).getText().toString();
 
-                    //setup gender select
-                    Spinner spinner = (Spinner) alertDialog.findViewById(R.id.spinGender);
-                    ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(messageView.getContext(), R.array.gender_array, android.R.layout.simple_spinner_item);
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spinner.setAdapter(adapter);
-                    spinner.setOnItemSelectedListener(new SpinnerActivity());
+                    Pet pet = new Pet();
+                    pet.setUrlImage(displayPets.urlImage);
+                    pet.setDescription(displayPets.description);
+                    pet.setBreed(displayPets.breed);
+                    pet.setAge(Integer.parseInt(age));
+                    pet.setWeight(Integer.parseInt(weight));
+                    pet.setPetName(name);
+                    pet.setHouseholdId(ParseUser.getCurrentUser());
+                    pet.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null)
+                                Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,"Pet added!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
                 }
             });
 
