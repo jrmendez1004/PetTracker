@@ -34,34 +34,31 @@ public class SignupActivity extends AppCompatActivity {
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createProfile();
+                createHousehold();
             }
         });
 
     }
 
-    private void createProfile() {
+    private void createHousehold() {
         if(etPassword.getText().toString().compareTo(etConfirmPw.getText().toString()) == 0){
             ParseUser user = new ParseUser();
             user.setUsername(etUsername.getText().toString());
             user.setPassword(etPassword.getText().toString());
-            finish();
-            Intent intent = new Intent(SignupActivity.this, CreateHouseholdActivity.class);
-            startActivity(intent);
-//            user.signUpInBackground(new SignUpCallback() {
-//                @Override
-//                public void done(ParseException e) {
-//                    if(e == null) {
-//                        finish();
-//                        Toast.makeText(SignupActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
-//                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-//                        startActivity(intent);
-//                    }
-//                    else {
-//                        Toast.makeText(SignupActivity.this, "Something went wrong :(", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            });
+            user.signUpInBackground(new SignUpCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e == null) {
+                        finish();
+                        Toast.makeText(SignupActivity.this, "Account Created!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(SignupActivity.this, "Something went wrong :(", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
 
         else {

@@ -2,6 +2,7 @@ package com.example.pettracker.Models.Owners;
 import com.example.pettracker.Models.Task;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
@@ -21,15 +22,15 @@ public class Owner extends ParseObject {
         return getString(KEY_OWNER_NAME);
     }
 
-    public String getHouseHoldId() {
-        return getString(KEY_HOUSEHOLD_ID);
+    public ParseUser getHouseHoldId() {
+        return getParseUser(KEY_HOUSEHOLD_ID);
     }
 
     public void setOwnerName(String ownerName) {
         put(KEY_OWNER_NAME, ownerName);
     }
 
-    public void setHouseholdID(String householdID) {
+    public void setHouseholdID(ParseUser householdID) {
         put(KEY_HOUSEHOLD_ID, householdID);
     }
 

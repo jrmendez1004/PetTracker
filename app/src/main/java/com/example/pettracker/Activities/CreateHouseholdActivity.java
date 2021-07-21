@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.UserHandle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,12 @@ import android.widget.Toast;
 
 import com.example.pettracker.Models.Owners.Owner;
 import com.example.pettracker.R;
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.parceler.Parcels;
 
@@ -47,7 +54,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
             return;
         }
 
-        if(etNumOwners.getText().toString() == "null") {
+        if(etNumOwners.getText().toString().length() == 0) {
             Toast.makeText(CreateHouseholdActivity.this, "You must enter a number", Toast.LENGTH_SHORT).show();
         }
 
@@ -61,7 +68,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
         {
             EditText editText = new EditText(this);
             editText.setHint("Owner Name");
-            ownerNames.add(editText); //Save edit texts for later
+            ownerNames.add(editText); //Save edit texts for later use
             linearLayout.addView(editText);
         }
         Button button = new Button(this);
@@ -71,20 +78,53 @@ public class CreateHouseholdActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
                 for(int i = 0; i < ownerNames.size(); i++) {
                     if(ownerNames.get(i).getText().toString().equals("")) { //Make sure every text field has a name
                         Toast.makeText(CreateHouseholdActivity.this, "Enter a name for every owner", Toast.LENGTH_SHORT).show();
-                        //owners.clear(); needs to clear all owners that were just put in, owners with the household id
+                        removeOwners(currentUser);
                         return;
                     }
-
-                    //need to add owners with the household id to the database
+                    saveOwner(ownerNames.get(i).getText().toString(), currentUser);
                 }
-
                 //Moves along in Household creation
                 finish();
                 Intent intent = new Intent(CreateHouseholdActivity.this, AddDogActivity.class);
                 startActivity(intent);
+            }
+        });
+    }
+
+    private void removeOwners(ParseUser householdID) {
+        ParseQuery<Owner> query = ParseQuery.getQuery(Owner.class);
+        query.whereEqualTo(Owner.KEY_HOUSEHOLD_ID, householdID);
+        query.findInBackground(new FindCallback<Owner>() {
+            @Override
+            public void done(List<Owner> owners, ParseException e) {
+                if(e != null)
+                    return;
+                for(Owner owner : owners) {
+                    owner.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e != null)
+                                Toast.makeText(CreateHouseholdActivity.this, "error while deleting", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    private void saveOwner(String ownerName, ParseUser householdID) {
+        Owner owner = new Owner();
+        owner.setOwnerName(ownerName);
+        owner.setHouseholdID(householdID);
+        owner.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e != null)
+                    Toast.makeText(CreateHouseholdActivity.this, "error while saving", Toast.LENGTH_SHORT).show();
             }
         });
     }
