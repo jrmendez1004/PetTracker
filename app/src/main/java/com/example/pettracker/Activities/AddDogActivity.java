@@ -10,6 +10,7 @@ import android.util.Log;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.pettracker.Adapters.DogBreedAdapter;
 import com.example.pettracker.DogApiClient;
+import com.example.pettracker.EndlessRecyclerViewScrollListener;
 import com.example.pettracker.Models.Pets.DisplayPets;
 import com.example.pettracker.Models.Pets.Pet;
 import com.example.pettracker.R;
@@ -27,6 +28,7 @@ public class AddDogActivity extends AppCompatActivity {
     RecyclerView rvDogBreeds;
     List<DisplayPets> dogBreeds;
     DogBreedAdapter adapter;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +37,19 @@ public class AddDogActivity extends AppCompatActivity {
 
         dogBreeds = new ArrayList<>();
         rvDogBreeds = (RecyclerView) findViewById(R.id.rvDogBreeds);
-        rvDogBreeds.setLayoutManager(new GridLayoutManager(this, 2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        rvDogBreeds.setLayoutManager(gridLayoutManager);
         adapter = new DogBreedAdapter(this, dogBreeds);
         rvDogBreeds.setAdapter(adapter);
+
+        //Endless Scroll implementation
+        scrollListener = new EndlessRecyclerViewScrollListener(gridLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadDogBreeds(page);
+            }
+        };
+        rvDogBreeds.addOnScrollListener(scrollListener);
 
         loadDogBreeds(0);
     }

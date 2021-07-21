@@ -29,8 +29,10 @@ public class DisplayPets {
 
     private static DisplayPets fromJson(JSONObject jsonObject) throws JSONException{
         DisplayPets pet = new DisplayPets(jsonObject.getString("name")
-                ,jsonObject.getString("temperament")
+                ,"No description found"
                 , jsonObject.getJSONObject("image").getString("url"));
+        if(jsonObject.has("temperament"))
+            pet.description = jsonObject.getString("temperament");
 
         return pet;
     }

@@ -102,6 +102,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             }
         }
 
+        //Creates Alert to enter in dog information
         private void showDetailsAlert(DisplayPets displayPets) {
             View  messageView = LayoutInflater.from(context).inflate(R.layout.message_item, null);
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
@@ -139,9 +140,8 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                             Toast.makeText(context,"Pet added!", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-                    Intent intent = new Intent(context, LoginActivity.class);
-                    context.startActivity(intent);
+                    dialog.dismiss();
+                    showNextAlert();
                 }
             });
 
@@ -152,6 +152,33 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             alertDialog.show();
         }
 
+        //Creates option to add another dog to household
+        private void showNextAlert() {
+            View  messageView = LayoutInflater.from(context).inflate(R.layout.message_next, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+            alertDialogBuilder.setView(messageView);
+            final AlertDialog alertDialog = alertDialogBuilder.create();
+
+            alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "Yes, add another", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "No, move on", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                    Intent intent = new Intent(context, LoginActivity.class);
+                    context.startActivity(intent);
+                }
+            });
+
+            alertDialog.show();
+        }
+
+        //Handles spinner selection
         public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                 if(parent.getItemAtPosition(pos).equals('M'))

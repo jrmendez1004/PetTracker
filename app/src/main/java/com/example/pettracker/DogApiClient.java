@@ -21,7 +21,7 @@ import okhttp3.Headers;
 public class DogApiClient {
     private static final String APIKEY = "b1edb9b7-31bc-4cf9-b333-d9d28725b7db"; //create secret file for this
     private static final String API = "https://api.thedogapi.com/v1/";
-    private static final String RESPONSE_LIMIT = "25";
+    private static final String RESPONSE_LIMIT = "26";
 
     public DogApiClient() {
     }

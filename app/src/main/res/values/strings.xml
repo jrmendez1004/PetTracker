@@ -13,6 +13,7 @@
     <string name="dog_profile">Dog Profile</string>
     <string name="num_owners">Enter Number of owners</string>
     <string name="confirm">Confirm</string>
+    <string name="another_pet">Do you want to add another pet?</string>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
