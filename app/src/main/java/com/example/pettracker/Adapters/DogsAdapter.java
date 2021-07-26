@@ -14,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.example.pettracker.Models.Pets.Pet;
+import com.example.pettracker.Models.Pets.PetInfoActivity;
 import com.example.pettracker.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -47,16 +49,6 @@ public class DogsAdapter extends RecyclerView.Adapter<DogsAdapter.ViewHolder>{
         return pets.size();
     }
 
-    public void clear(){
-        pets.clear();
-        notifyDataSetChanged();
-    }
-
-    public void addAll(List<Pet> list){
-        pets.addAll(list);
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvPetName;
         ImageView ivPetImage;
@@ -66,13 +58,35 @@ public class DogsAdapter extends RecyclerView.Adapter<DogsAdapter.ViewHolder>{
 
             tvPetName = (TextView) itemView.findViewById(R.id.tvPetName);
             ivPetImage = (ImageView) itemView.findViewById(R.id.ivPetImage);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onPetClick();
+                }
+            });
+        }
+
+        private void onPetClick() {
+            int position = getAdapterPosition();
+            if(position != RecyclerView.NO_POSITION) {
+                Pet pet = pets.get(position);
+                goPetDetails(pet);
+            }
+        }
+
+        //need to get Dog from database
+        private void goPetDetails(Pet pet) {
+            Intent intent = new Intent(context, PetInfoActivity.class);
+            intent.putExtra("pet", Parcels.wrap(pet));
+            context.startActivity(intent);
         }
 
         public void bind(Pet pet) {
             tvPetName.setText(pet.getPetName());
             int radius = 50;
             Glide.with(itemView)
-                    .load(itemView.getResources().getDrawable(R.drawable.dog))
+                    .load(pet.getUrlImage())
                     .centerInside()
                     .transform(new RoundedCorners(radius))
                     .into(ivPetImage);

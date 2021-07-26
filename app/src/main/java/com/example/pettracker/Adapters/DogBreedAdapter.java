@@ -170,7 +170,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
-                    Intent intent = new Intent(context, LoginActivity.class);
+                    Intent intent = new Intent(context, MainActivity.class);
                     context.startActivity(intent);
                 }
             });

@@ -42,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void createHousehold() {
         if(etPassword.getText().toString().compareTo(etConfirmPw.getText().toString()) == 0){
-            ParseUser user = new ParseUser();
+            ParseUser user = new ParseUser(); //ParseUser = householdID
             user.setUsername(etUsername.getText().toString());
             user.setPassword(etPassword.getText().toString());
             user.signUpInBackground(new SignUpCallback() {

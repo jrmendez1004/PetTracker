@@ -51,7 +51,7 @@ public class AddDogActivity extends AppCompatActivity {
         };
         rvDogBreeds.addOnScrollListener(scrollListener);
 
-        loadDogBreeds(0);
+        loadDogBreeds(0); //Initial load
     }
 
     public void loadDogBreeds(int page) {

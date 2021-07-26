@@ -34,22 +34,11 @@ public class PetInfoActivity extends AppCompatActivity {
         ivDogImage = (ImageView) findViewById(R.id.ivDogImage);
         btnRemove = (Button) findViewById(R.id.btnRemovePet);
 
-        pet = Parcels.unwrap(getIntent().getParcelableExtra("Pet"));
+        pet = Parcels.unwrap(getIntent().getParcelableExtra("pet"));
 
         tvDogName.setText(pet.getPetName());
         tvDogAge.setText(String.format("%d years old", pet.getAge()));
-        tvDescription.setText(getDescription());
-        Glide.with(this).load(getImage()).into(ivDogImage);
-    }
-
-    //Needs to Access API to get a dog image
-    private Drawable getImage() {
-        return getResources().getDrawable(R.drawable.dog);
-    }
-
-
-    //Needs to Access API to get a description
-    private String getDescription() {
-        return "Temporary Description";
+        tvDescription.setText(pet.getDescription());
+        Glide.with(this).load(pet.getUrlImage()).into(ivDogImage);
     }
 }

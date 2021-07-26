@@ -38,13 +38,13 @@ public class Pet extends ParseObject {
         return getInt(KEY_AGE);
     }
 
-    public String getHouseHoldId() {
-        return getString(KEY_HOUSEHOLD_ID);
-    }
+    public ParseUser getHouseHoldId() { return getParseUser(KEY_HOUSEHOLD_ID); }
 
-    public ParseUser getUrlImage() { return getParseUser(KEY_IMAGE_URL); }
+    public String getUrlImage() { return getString(KEY_IMAGE_URL); }
 
     public int getWeight() { return getInt(KEY_WEIGHT); }
+
+    public String getDescription() { return getString(KEY_DESCRIPTION); }
 
 
     public void setPetName(String petName) {  put(KEY_NAME, petName); }

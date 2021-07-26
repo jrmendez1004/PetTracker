@@ -54,7 +54,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
             return;
         }
 
-        if(etNumOwners.getText().toString().length() == 0) {
+        if(etNumOwners.getText().toString().equals("")) {
             Toast.makeText(CreateHouseholdActivity.this, "You must enter a number", Toast.LENGTH_SHORT).show();
         }
 
@@ -71,6 +71,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
             ownerNames.add(editText); //Save edit texts for later use
             linearLayout.addView(editText);
         }
+        //Add button after EditText's are added
         Button button = new Button(this);
         button.setText("Make household!");
         linearLayout.addView(button);
@@ -78,7 +79,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser currentUser = ParseUser.getCurrentUser();
+                ParseUser currentUser = ParseUser.getCurrentUser(); //current user = household ID
                 for(int i = 0; i < ownerNames.size(); i++) {
                     if(ownerNames.get(i).getText().toString().equals("")) { //Make sure every text field has a name
                         Toast.makeText(CreateHouseholdActivity.this, "Enter a name for every owner", Toast.LENGTH_SHORT).show();

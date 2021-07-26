@@ -19,16 +19,6 @@ public class Task extends ParseObject{
     public Task(){
     }
 
-    public Task(String color, String ownerId, String taskDescription) {
-        this.color = color;
-        this.ownerId = ownerId;
-        TaskDescription = taskDescription;
-    }
-
-    String color;
-    String ownerId;
-    String TaskDescription;
-
     //Server Methods
     public String getTime(){
         return getString(KEY_TIME);
@@ -50,13 +40,11 @@ public class Task extends ParseObject{
         return getString(KEY_OWNER_ID);
     }
 
-    public void setOwnerId(String ownerId){
+    public void setOwnerId(String  ownerId){
         put(KEY_OWNER_ID, ownerId);
     }
 
-    public void setTaskDescription(String taskDescription) {
-        put(KEY_DESCRIPTION, taskDescription);
-    }
+    public void setTaskDescription(String taskDescription) { put(KEY_DESCRIPTION, taskDescription); }
 
     public String getTaskDescription() {
         return getString(KEY_DESCRIPTION);
