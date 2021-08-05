@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.pettracker.Adapters.DogTaskAdapter;
+import com.example.pettracker.Adapters.OwnerTaskAdapter;
 import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Pet;
 import com.example.pettracker.Models.Task;
@@ -46,6 +47,11 @@ public class SetupTasksActivity extends AppCompatActivity {
         rvDogTasks.setAdapter(dogAdapter);
         rvDogTasks.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         dogAdapter.notifyDataSetChanged();
+
+        OwnerTaskAdapter ownerAdapter = new OwnerTaskAdapter(this, owners);
+        rvOwnerTasks.setAdapter(ownerAdapter);
+        rvOwnerTasks.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        ownerAdapter.notifyDataSetChanged();
 
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
