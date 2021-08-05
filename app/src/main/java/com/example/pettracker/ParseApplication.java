@@ -2,8 +2,8 @@ package com.example.pettracker;
 
 import android.app.Application;
 
-import com.example.pettracker.Models.Owners.Owner;
-import com.example.pettracker.Models.Pets.Pet;
+import com.example.pettracker.Models.Owner;
+import com.example.pettracker.Models.Pet;
 import com.example.pettracker.Models.Task;
 import com.parse.Parse;
 import com.parse.ParseObject;

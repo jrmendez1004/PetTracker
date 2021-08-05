@@ -1,4 +1,4 @@
-package com.example.pettracker.Models.Pets;
+package com.example.pettracker.Models;
 
 import org.json.JSONArray;
 import org.json.JSONException;

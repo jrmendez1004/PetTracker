@@ -2,9 +2,7 @@ package com.example.pettracker.Models;
 
 
 import com.parse.ParseClassName;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
@@ -12,7 +10,7 @@ import org.parceler.Parcel;
 @ParseClassName("Task")
 public class Task extends ParseObject{
     public static final String KEY_TIME = "timeAndDate";
-    public static final String KEY_COLOR = "color";
+    public static final String KEY_DAY = "day";
     public static final String KEY_OWNER_ID = "ownerId";
     public static final String KEY_DESCRIPTION = "description";
 
@@ -28,14 +26,6 @@ public class Task extends ParseObject{
         put(KEY_TIME, time);
     }
 
-    public String getColor(){
-        return getString(KEY_COLOR);
-    }
-
-    public void setColor(String color){
-        put(KEY_COLOR, color);
-    }
-
     public String getOwnerId(){
         return getString(KEY_OWNER_ID);
     }
@@ -49,4 +39,14 @@ public class Task extends ParseObject{
     public String getTaskDescription() {
         return getString(KEY_DESCRIPTION);
     }
+
+    public String getDay() {
+        return getString(KEY_DAY);
+    }
+
+    public void setDay(String day) {
+        put(KEY_DAY, day);
+    }
+
+
 }

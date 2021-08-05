@@ -11,13 +11,11 @@ import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.example.pettracker.Adapters.DogBreedAdapter;
 import com.example.pettracker.DogApiClient;
 import com.example.pettracker.EndlessRecyclerViewScrollListener;
-import com.example.pettracker.Models.Pets.DisplayPets;
-import com.example.pettracker.Models.Pets.Pet;
+import com.example.pettracker.Models.DisplayPets;
 import com.example.pettracker.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

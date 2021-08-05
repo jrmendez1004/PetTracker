@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.pettracker.Models.Pets.Pet;
-import com.example.pettracker.Models.Pets.PetInfoActivity;
+import com.example.pettracker.Models.Pet;
+import com.example.pettracker.Activities.PetInfoActivity;
 import com.example.pettracker.R;
 
 import org.jetbrains.annotations.NotNull;

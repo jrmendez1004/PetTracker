@@ -1,4 +1,4 @@
-package com.example.pettracker.Models.Owners;
+package com.example.pettracker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.pettracker.Adapters.TasksAdapter;
+import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Task;
 import com.example.pettracker.R;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

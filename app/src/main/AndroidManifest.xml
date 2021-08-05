@@ -13,10 +13,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetTracker">
-        <activity android:name=".Activities.CreateHouseholdActivity"></activity>
+        <activity android:name=".Activities.SetupTasksActivity"></activity>
+        <activity android:name=".Activities.SetupTaksActivity" />
+        <activity android:name=".Activities.CreateHouseholdActivity" />
         <activity android:name=".Activities.AddDogActivity" />
-        <activity android:name=".Models.Pets.PetInfoActivity" />
-        <activity android:name=".Models.Owners.OwnerInfoActivity" />
+        <activity android:name=".Activities.PetInfoActivity" />
+        <activity android:name=".Activities.OwnerInfoActivity" />
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.SignupActivity" />
 

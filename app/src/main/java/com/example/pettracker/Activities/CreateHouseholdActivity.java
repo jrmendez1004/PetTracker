@@ -4,16 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.UserHandle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pettracker.Models.Owners.Owner;
+import com.example.pettracker.Models.Owner;
 import com.example.pettracker.R;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -22,14 +19,13 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import org.parceler.Parcels;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateHouseholdActivity extends AppCompatActivity {
-    Button btnConfirm;
-    EditText etNumOwners;
+    private Button btnConfirm;
+    private EditText etNumOwners;
+    private String[] colors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +34,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
 
         btnConfirm = (Button) findViewById(R.id.btnConfirm);
         etNumOwners = (EditText) findViewById(R.id.etNumOwners);
+        colors = getResources().getStringArray(R.array.calColors);
 
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,13 +77,17 @@ public class CreateHouseholdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ParseUser currentUser = ParseUser.getCurrentUser(); //current user = household ID
-                for(int i = 0; i < ownerNames.size(); i++) {
+                int j = 0; //index to use for colors
+                for(int i = 0; i < ownerNames.size(); i++, j++) {
+                    if(j == colors.length)
+                        j = 0;
+
                     if(ownerNames.get(i).getText().toString().equals("")) { //Make sure every text field has a name
                         Toast.makeText(CreateHouseholdActivity.this, "Enter a name for every owner", Toast.LENGTH_SHORT).show();
                         removeOwners(currentUser);
                         return;
                     }
-                    saveOwner(ownerNames.get(i).getText().toString(), currentUser);
+                    saveOwner(ownerNames.get(i).getText().toString(), currentUser, colors[j]);
                 }
                 //Moves along in Household creation
                 finish();
@@ -117,10 +118,11 @@ public class CreateHouseholdActivity extends AppCompatActivity {
         });
     }
 
-    private void saveOwner(String ownerName, ParseUser householdID) {
+    private void saveOwner(String ownerName, ParseUser householdID, String color) {
         Owner owner = new Owner();
         owner.setOwnerName(ownerName);
         owner.setHouseholdID(householdID);
+        owner.setColor(color);
         owner.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,16 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.example.pettracker.Activities.LoginActivity;
 import com.example.pettracker.Activities.MainActivity;
-import com.example.pettracker.Models.Pets.DisplayPets;
-import com.example.pettracker.Models.Pets.Pet;
+import com.example.pettracker.Models.DisplayPets;
+import com.example.pettracker.Models.Pet;
 import com.example.pettracker.R;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHolder> {
@@ -124,6 +121,11 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                     age = ((EditText) alertDialog.findViewById(R.id.etPetAge)).getText().toString();
                     weight = ((EditText) alertDialog.findViewById(R.id.etPetWeight)).getText().toString();
 
+                    if(name.length() == 0 || age.length() == 0 || weight.length() ==0) {
+                        Toast.makeText(context, "All fields must be filled", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     Pet pet = new Pet();
                     pet.setUrlImage(displayPets.urlImage);
                     pet.setDescription(displayPets.description);
@@ -131,12 +133,15 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                     pet.setAge(Integer.parseInt(age));
                     pet.setWeight(Integer.parseInt(weight));
                     pet.setPetName(name);
+                    pet.setGender(gender);
                     pet.setHouseholdId(ParseUser.getCurrentUser());
                     pet.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if(e != null)
+                            if(e != null) {
                                 Toast.makeText(context, "error while saving", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
                             Toast.makeText(context,"Pet added!", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -146,7 +151,9 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
             });
 
             alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) { dialog.cancel(); }
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
             });
 
             alertDialog.show();
@@ -181,7 +188,8 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
         //Handles spinner selection
         public class SpinnerActivity extends Activity implements AdapterView.OnItemSelectedListener {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                if(parent.getItemAtPosition(pos).equals('M'))
+                //gender = parent.getItemAtPosition(pos).toString();
+                if(parent.getItemAtPosition(pos).equals("Male"))
                     gender = "Male";
                 else
                     gender = "Female";

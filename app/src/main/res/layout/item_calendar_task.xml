@@ -28,6 +28,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="5dp"
                 android:lines="2"
+                android:textColor="#FFFFFF"
                 android:textSize="8sp"
                 tools:text="Walk the dog(s)" />
 
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvTaskTitle"
                 android:layout_marginStart="10dp"
+                android:textColor="#FFFFFF"
                 android:textSize="8sp"
                 tools:text="8am" />
         </RelativeLayout>

@@ -10,11 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Task;
 import com.example.pettracker.R;
-
-import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.List;
 
@@ -61,20 +62,29 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
         public void bind(Task task) {
             tvTaskTitle.setText(task.getTaskDescription());
             tvTaskTime.setText(task.getTime());
-            if(task.getColor().equals("red"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.red));
-            else if(task.getColor().equals("green"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.green));
-            else if(task.getColor().equals("blue"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.blue));
-            else if(task.getColor().equals("yellow"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.yellow));
-            else if(task.getColor().equals("orange"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.orange));
-            else if(task.getColor().equals("teal"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.teal_200));
-            else if(task.getColor().equals("purple"))
-                cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.purple_200));
+            ParseQuery query = ParseQuery.getQuery(Owner.class);
+            query.whereEqualTo("objectId", task.getOwnerId());
+            query.findInBackground(new FindCallback<Owner>() {
+                @Override
+                public void done(List<Owner> queryOwners, ParseException e) {
+                    if(e != null)
+                        return;
+                    if(queryOwners.get(0).getColor().equals("red"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.red));
+                    else if(queryOwners.get(0).getColor().equals("green"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.green));
+                    else if(queryOwners.get(0).getColor().equals("blue"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.blue));
+                    else if(queryOwners.get(0).getColor().equals("yellow"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.yellow));
+                    else if(queryOwners.get(0).getColor().equals("orange"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.orange));
+                    else if(queryOwners.get(0).getColor().equals("teal"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.teal_200));
+                    else if(queryOwners.get(0).getColor().equals("purple"))
+                        cvTask.setCardBackgroundColor(itemView.getResources().getColor(R.color.purple_200));
+                }
+            });
         }
     }
 }
