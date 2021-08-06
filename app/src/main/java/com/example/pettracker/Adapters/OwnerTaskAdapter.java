@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pettracker.Models.DisplayPets;
 import com.example.pettracker.Models.Owner;
 import com.example.pettracker.R;
 
@@ -55,10 +56,49 @@ public class OwnerTaskAdapter extends RecyclerView.Adapter<OwnerTaskAdapter.View
             cbAfternoon = itemView.findViewById(R.id.cbAfternoon);
             cbEvening = itemView.findViewById(R.id.cbEvening);
             cbNight = itemView.findViewById(R.id.cbNight);
+
+            cbMorning.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateAvailability();
+                }
+            });
+
+            cbAfternoon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateAvailability();
+                }
+            });
+
+            cbEvening.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateAvailability();
+                }
+            });
+
+            cbNight.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateAvailability();
+                }
+            });
         }
 
         public void bind(Owner owner) {
             tvOwnerName.setText(owner.getOwnerName());
+        }
+
+        private void updateAvailability() {
+            int position = getAdapterPosition();
+            if(position != RecyclerView.NO_POSITION) {
+                Owner owner = owners.get(position); //Get information from card
+                owner.setMorning(cbMorning.isChecked());
+                owner.setAfternoon(cbAfternoon.isChecked());
+                owner.setEvening(cbEvening.isChecked());
+                owner.setKeyNight(cbNight.isChecked());
+            }
         }
     }
 }

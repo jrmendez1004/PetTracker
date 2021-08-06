@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Pet> pets; //Need to get list of pets from database
     public List<Task> tasks;
     public List<Owner> owners;
-    public static int REQUEST_CODE = 25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 removeAllTasks();
+                tasks.clear();
                 calendarAdapter.notifyDataSetChanged();
             }
         });
@@ -166,7 +166,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SetupTasksActivity.class);
             intent.putExtra("pets", Parcels.wrap(pets));
             intent.putExtra("owners", Parcels.wrap(owners));
-            startActivityForResult(intent, REQUEST_CODE);
+            startActivity(intent);
+            loadTasks(ParseUser.getCurrentUser());
         }
         else {
             showTaskAlert();
