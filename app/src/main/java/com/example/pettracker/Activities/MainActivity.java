@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pettracker.Adapters.CalendarAdapter;
-import com.example.pettracker.Adapters.DogBreedAdapter;
 import com.example.pettracker.Adapters.DogsAdapter;
 import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Pet;
@@ -42,16 +40,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView rvCal;
+    private RecyclerView rvCalSunday;
+    private RecyclerView rvCalMonday;
+    private RecyclerView rvCalTuesday;
+    private RecyclerView rvCalWednesday;
+    private RecyclerView rvCalThursday;
+    private RecyclerView rvCalFriday;
+    private RecyclerView rvCalSaturday;
     private RecyclerView rvDogList;
-    private Button tempUser;
     private Button switchCal;
+    private Button btnLogout;
     private TextView calViewType;
     private ImageView ivAddTask;
     private DogsAdapter dogsAdapter;
-    private CalendarAdapter calendarAdapter;
+    private CalendarAdapter calendarAdapterSun;
+    private CalendarAdapter calendarAdapterMon;
+    private CalendarAdapter calendarAdapterTue;
+    private CalendarAdapter calendarAdapterWed;
+    private CalendarAdapter calendarAdapterThu;
+    private CalendarAdapter calendarAdapterFri;
+    private CalendarAdapter calendarAdapterSat;
     private List<Pet> pets; //Need to get list of pets from database
     public List<Task> tasks;
+    private List<Task> mondayTasks;
+    private List<Task> tuesdayTasks;
+    private List<Task> wednesdayTasks;
+    private List<Task> thursdayTasks;
+    private List<Task> fridayTasks;
+    private List<Task> saturdayTasks;
+    private List<Task> sundayTasks;
     public List<Owner> owners;
 
     @Override
@@ -61,24 +78,31 @@ public class MainActivity extends AppCompatActivity {
 
         pets = new ArrayList<>();
         tasks = new ArrayList<>();
+        mondayTasks = new ArrayList<>();
+        tuesdayTasks = new ArrayList<>();
+        wednesdayTasks =  new ArrayList<>();
+        thursdayTasks = new ArrayList<>();
+        fridayTasks = new ArrayList<>();
+        saturdayTasks = new ArrayList<>();
+        sundayTasks = new ArrayList<>();
         owners = new ArrayList<>();
-        rvCal = (RecyclerView) findViewById(R.id.rvCal);
+        rvCalSunday = (RecyclerView) findViewById(R.id.rvCalSunday);
+        rvCalMonday = (RecyclerView) findViewById(R.id.rvCalMonday);
+        rvCalTuesday = (RecyclerView) findViewById(R.id.rvCalTuesday);
+        rvCalWednesday = (RecyclerView) findViewById(R.id.rvCalWednesday);
+        rvCalThursday = (RecyclerView) findViewById(R.id.rvCalThursday);
+        rvCalFriday = (RecyclerView) findViewById(R.id.rvCalFriday);
+        rvCalSaturday = (RecyclerView) findViewById(R.id.rvCalSaturday);
         rvDogList = (RecyclerView) findViewById(R.id.rvDogList);
-        tempUser = (Button) findViewById(R.id.tempBtn1);
         switchCal = (Button) findViewById(R.id.btnSwitchCal);
         calViewType = (TextView) findViewById(R.id.tvCalView);
         ivAddTask = (ImageView) findViewById(R.id.ivAddTask);
+        btnLogout = (Button) findViewById(R.id.btnLogout);
+
 
         ivAddTask.setImageDrawable(getResources().getDrawable(R.drawable.plus));
         calViewType.setText("This Week");
         switchCal.setText("Week");
-
-        tempUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goOwnerDetails();
-            }
-        });
 
         ivAddTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,34 +111,76 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Testing Code
-        Button btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                removeAllTasks();
-                tasks.clear();
-                calendarAdapter.notifyDataSetChanged();
+                onLogout();
+                //removeAllTasks();
+                //tasks.clear();
+                //calendarAdapter.notifyDataSetChanged();
             }
         });
-        //
 
         dogsAdapter = new DogsAdapter(this, pets);
         rvDogList.setAdapter(dogsAdapter);
         rvDogList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         loadPets(ParseUser.getCurrentUser());
 
-        calendarAdapter = new CalendarAdapter(this, tasks);
-        rvCal.setAdapter(calendarAdapter);
-        rvCal.setLayoutManager(new GridLayoutManager(this, 7));
+        calendarAdapterSun = new CalendarAdapter(this, sundayTasks);
+        rvCalSunday.setAdapter(calendarAdapterSun);
+        rvCalSunday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterMon = new CalendarAdapter(this, mondayTasks);
+        rvCalMonday.setAdapter(calendarAdapterMon);
+        rvCalMonday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterTue = new CalendarAdapter(this, tuesdayTasks);
+        rvCalTuesday.setAdapter(calendarAdapterTue);
+        rvCalTuesday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterWed = new CalendarAdapter(this, wednesdayTasks);
+        rvCalWednesday.setAdapter(calendarAdapterWed);
+        rvCalWednesday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterThu = new CalendarAdapter(this, thursdayTasks);
+        rvCalThursday.setAdapter(calendarAdapterThu);
+        rvCalThursday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterFri = new CalendarAdapter(this, fridayTasks);
+        rvCalFriday.setAdapter(calendarAdapterFri);
+        rvCalFriday.setLayoutManager(new LinearLayoutManager(this));
+
+        calendarAdapterSat = new CalendarAdapter(this, saturdayTasks);
+        rvCalSaturday.setAdapter(calendarAdapterSat);
+        rvCalSaturday.setLayoutManager(new LinearLayoutManager(this));
+
         loadTasks(ParseUser.getCurrentUser());
 
-        rvCal.addItemDecoration(new DividerItemDecoration(rvCal.getContext(), DividerItemDecoration.HORIZONTAL));
-        rvCal.addItemDecoration(new DividerItemDecoration(rvCal.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalSunday.addItemDecoration(new DividerItemDecoration(rvCalSunday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalSunday.addItemDecoration(new DividerItemDecoration(rvCalSunday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalMonday.addItemDecoration(new DividerItemDecoration(rvCalMonday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalMonday.addItemDecoration(new DividerItemDecoration(rvCalMonday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalTuesday.addItemDecoration(new DividerItemDecoration(rvCalTuesday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalTuesday.addItemDecoration(new DividerItemDecoration(rvCalTuesday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalWednesday.addItemDecoration(new DividerItemDecoration(rvCalWednesday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalWednesday.addItemDecoration(new DividerItemDecoration(rvCalWednesday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalThursday.addItemDecoration(new DividerItemDecoration(rvCalThursday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalThursday.addItemDecoration(new DividerItemDecoration(rvCalThursday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalFriday.addItemDecoration(new DividerItemDecoration(rvCalFriday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalFriday.addItemDecoration(new DividerItemDecoration(rvCalFriday.getContext(), DividerItemDecoration.VERTICAL));
+        rvCalSaturday.addItemDecoration(new DividerItemDecoration(rvCalSaturday.getContext(), DividerItemDecoration.HORIZONTAL));
+        rvCalSaturday.addItemDecoration(new DividerItemDecoration(rvCalSaturday.getContext(), DividerItemDecoration.VERTICAL));
     }
 
-    //Need to get owner from database
-    private void goOwnerDetails() {
+    private void onLogout() {
+        finish();
+        ParseUser.logOut();
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    }
+
+    private void goOwnerDetails() {//need to fix
         Intent intent = new Intent(this, OwnerInfoActivity.class);
         startActivity(intent);
     }
@@ -139,7 +205,29 @@ public class MainActivity extends AppCompatActivity {
                             if(e != null)
                                 return;
                             tasks.addAll(queryTasks);
-                            calendarAdapter.notifyDataSetChanged();
+                            for(Task task:queryTasks) {
+                                if(task.getDay().equals("Sunday"))
+                                    sundayTasks.add(task);
+                                if(task.getDay().equals("Monday"))
+                                    mondayTasks.add(task);
+                                if(task.getDay().equals("Tuesday"))
+                                    tuesdayTasks.add(task);
+                                if(task.getDay().equals("Wednesday"))
+                                    wednesdayTasks.add(task);
+                                if(task.getDay().equals("Thursday"))
+                                    thursdayTasks.add(task);
+                                if(task.getDay().equals("Friday"))
+                                    fridayTasks.add(task);
+                                if(task.getDay().equals("Saturday"))
+                                    saturdayTasks.add(task);
+                            }
+                            calendarAdapterSun.notifyDataSetChanged();
+                            calendarAdapterMon.notifyDataSetChanged();
+                            calendarAdapterTue.notifyDataSetChanged();
+                            calendarAdapterWed.notifyDataSetChanged();
+                            calendarAdapterThu.notifyDataSetChanged();
+                            calendarAdapterFri.notifyDataSetChanged();
+                            calendarAdapterSat.notifyDataSetChanged();
                         }
                     });
                 }
@@ -275,27 +363,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tasks.add(task);
-        calendarAdapter.notifyDataSetChanged();
-    }
-
-    //Helper functions
-    public void removeAllTasks() {
-        ParseQuery<Task> query = ParseQuery.getQuery(Task.class);
-        query.include(Task.KEY_OWNER_ID);
-        query.findInBackground(new FindCallback<Task>() {
-            @Override
-            public void done(List<Task> objects, ParseException e) {
-                if(e != null)
-                    return;
-                for(Task task:objects)
-                    task.deleteInBackground(new DeleteCallback() {
-                        @Override
-                        public void done(ParseException e) {
-
-                        }
-                    });
-            }
-        });
-        calendarAdapter.notifyDataSetChanged();
+        calendarAdapterSun.notifyDataSetChanged();
+        calendarAdapterMon.notifyDataSetChanged();
+        calendarAdapterTue.notifyDataSetChanged();
+        calendarAdapterWed.notifyDataSetChanged();
+        calendarAdapterThu.notifyDataSetChanged();
+        calendarAdapterFri.notifyDataSetChanged();
+        calendarAdapterSat.notifyDataSetChanged();
     }
 }

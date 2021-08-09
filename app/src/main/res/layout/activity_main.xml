@@ -17,15 +17,12 @@
         tools:text="Weekly View" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCal"
-        android:layout_width="0dp"
+        android:id="@+id/rvCalSunday"
+        android:layout_width="57dp"
         android:layout_height="300dp"
-        android:layout_marginTop="5dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <TextView
         android:id="@+id/tvCalView"
@@ -54,22 +51,119 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvCal" />
+        app:layout_constraintTop_toBottomOf="@+id/rvCalSunday" />
 
     <Button
-        android:id="@+id/tempBtn1"
+        android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/owner_profile"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Log out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalMonday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalSunday"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalTuesday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalMonday"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalWednesday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalTuesday"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalThursday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalWednesday"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalFriday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalThursday"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCalSaturday"
+        android:layout_width="57dp"
+        android:layout_height="300dp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalFriday"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sunday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Monday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalSunday"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tuesday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalMonday"
+        app:layout_constraintTop_toTopOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wednesday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalTuesday"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thursday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalWednesday"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Friday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalThursday"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Saturday"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/rvCalFriday"
+        app:layout_constraintTop_toBottomOf="@+id/tvCalView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

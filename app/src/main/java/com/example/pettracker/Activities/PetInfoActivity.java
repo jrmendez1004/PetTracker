@@ -3,6 +3,7 @@ package com.example.pettracker.Activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -40,5 +41,17 @@ public class PetInfoActivity extends AppCompatActivity {
         tvDogAge.setText(String.format("%d years old", pet.getAge()));
         tvDescription.setText(pet.getDescription());
         Glide.with(this).load(pet.getUrlImage()).into(ivDogImage);
+
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deletePet();
+            }
+        });
+    }
+
+    private void deletePet() {
+        pet.deleteInBackground();
+        finish();
     }
 }
