@@ -178,6 +178,7 @@ public class DogBreedAdapter extends RecyclerView.Adapter<DogBreedAdapter.ViewHo
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                     Intent intent = new Intent(context, MainActivity.class);
+                    ((Activity) context).finish();
                     context.startActivity(intent);
                 }
             });

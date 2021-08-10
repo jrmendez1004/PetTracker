@@ -47,7 +47,7 @@ public class CreateHouseholdActivity extends AppCompatActivity {
     //Creates Edit Text fields when the user has confirmed the number of Owners
     private void listOwners() {
         if(etNumOwners.getText().toString() == "0") {
-            Toast.makeText(CreateHouseholdActivity.this, "There can't be 0 owners", Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateHouseholdActivity.this, "There can't be 0 owners", Toast.LENGTH_SHORT).show();
             return;
         }
 

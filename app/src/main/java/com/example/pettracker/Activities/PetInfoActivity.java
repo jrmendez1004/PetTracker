@@ -2,6 +2,7 @@ package com.example.pettracker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.pettracker.Adapters.DogTaskAdapter;
+import com.example.pettracker.Adapters.DogsAdapter;
 import com.example.pettracker.Models.Pet;
 import com.example.pettracker.R;
 
@@ -21,7 +24,6 @@ public class PetInfoActivity extends AppCompatActivity {
     TextView tvDescription;
     ImageView ivDogImage;
     Button btnRemove;
-
     Pet pet;
 
     @Override
@@ -50,8 +52,11 @@ public class PetInfoActivity extends AppCompatActivity {
         });
     }
 
+    //started activity for result
     private void deletePet() {
-        pet.deleteInBackground();
+        Intent intent = new Intent();
+        intent.putExtra("petToDelete", Parcels.wrap(pet));
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

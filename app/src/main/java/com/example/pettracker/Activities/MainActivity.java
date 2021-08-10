@@ -1,5 +1,6 @@
 package com.example.pettracker.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int REQUEST_CODE = 125;
     private RecyclerView rvCalSunday;
     private RecyclerView rvCalMonday;
     private RecyclerView rvCalTuesday;
@@ -50,9 +52,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvDogList;
     private Button switchCal;
     private Button btnLogout;
+    private Button btnAddDog;
     private TextView calViewType;
     private ImageView ivAddTask;
-    private DogsAdapter dogsAdapter;
+    DogsAdapter dogsAdapter;
     private CalendarAdapter calendarAdapterSun;
     private CalendarAdapter calendarAdapterMon;
     private CalendarAdapter calendarAdapterTue;
@@ -98,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
         calViewType = (TextView) findViewById(R.id.tvCalView);
         ivAddTask = (ImageView) findViewById(R.id.ivAddTask);
         btnLogout = (Button) findViewById(R.id.btnLogout);
+        btnAddDog = (Button) findViewById(R.id.btnAddDog);
 
 
         ivAddTask.setImageDrawable(getResources().getDrawable(R.drawable.plus));
@@ -115,9 +119,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onLogout();
-                //removeAllTasks();
-                //tasks.clear();
-                //calendarAdapter.notifyDataSetChanged();
+            }
+        });
+
+        btnAddDog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addDog();
             }
         });
 
@@ -170,6 +178,11 @@ public class MainActivity extends AppCompatActivity {
         rvCalFriday.addItemDecoration(new DividerItemDecoration(rvCalFriday.getContext(), DividerItemDecoration.VERTICAL));
         rvCalSaturday.addItemDecoration(new DividerItemDecoration(rvCalSaturday.getContext(), DividerItemDecoration.HORIZONTAL));
         rvCalSaturday.addItemDecoration(new DividerItemDecoration(rvCalSaturday.getContext(), DividerItemDecoration.VERTICAL));
+    }
+
+    private void addDog() {
+        Intent intent = new Intent(this, AddDogActivity.class);
+        startActivity(intent);
     }
 
     private void onLogout() {
@@ -255,7 +268,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("pets", Parcels.wrap(pets));
             intent.putExtra("owners", Parcels.wrap(owners));
             startActivity(intent);
-            loadTasks(ParseUser.getCurrentUser());
         }
         else {
             showTaskAlert();
@@ -344,7 +356,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
         alertDialog.show();
     }
 
@@ -363,6 +374,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tasks.add(task);
+        calendarAdapterSun.notifyDataSetChanged();
+        calendarAdapterMon.notifyDataSetChanged();
+        calendarAdapterTue.notifyDataSetChanged();
+        calendarAdapterWed.notifyDataSetChanged();
+        calendarAdapterThu.notifyDataSetChanged();
+        calendarAdapterFri.notifyDataSetChanged();
+        calendarAdapterSat.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Pet pet = Parcels.unwrap(data.getParcelableExtra("petToDelete"));
+            pets.remove(pet);
+            pet.deleteInBackground();
+            dogsAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         calendarAdapterSun.notifyDataSetChanged();
         calendarAdapterMon.notifyDataSetChanged();
         calendarAdapterTue.notifyDataSetChanged();

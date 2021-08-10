@@ -1,5 +1,6 @@
 package com.example.pettracker.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import org.parceler.Parcels;
 import java.util.List;
 
 public class DogsAdapter extends RecyclerView.Adapter<DogsAdapter.ViewHolder>{
+    private static final int REQUEST_CODE = 125;
     Context context;
     List<Pet> pets;
 
@@ -79,7 +81,7 @@ public class DogsAdapter extends RecyclerView.Adapter<DogsAdapter.ViewHolder>{
         private void goPetDetails(Pet pet) {
             Intent intent = new Intent(context, PetInfoActivity.class);
             intent.putExtra("pet", Parcels.wrap(pet));
-            context.startActivity(intent);
+            ((Activity) context).startActivityForResult(intent,REQUEST_CODE);
         }
 
         public void bind(Pet pet) {
