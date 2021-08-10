@@ -28,6 +28,7 @@ import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Pet;
 import com.example.pettracker.Models.Task;
 import com.example.pettracker.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -395,11 +396,22 @@ public class MainActivity extends AppCompatActivity {
                     pets.remove(pet);
                 }
             }
-
             dogsAdapter.notifyDataSetChanged();
+            Snackbar.make(rvDogList, R.string.snackbar_text, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.snackbar_action, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            pets.add(petToDelete);
+                            petToDelete.saveInBackground();
+                            dogsAdapter.notifyDataSetChanged();
+                        }
+                    })  // action text on the right side
+                    .setActionTextColor(getResources().getColor(R.color.teal_200))
+                    .setDuration(3000).show();
         }
 
         if(requestCode == TASK_REQUEST_CODE && resultCode == RESULT_OK) {
+            loadTasks(ParseUser.getCurrentUser());
             calendarAdapterSun.notifyDataSetChanged();
             calendarAdapterMon.notifyDataSetChanged();
             calendarAdapterTue.notifyDataSetChanged();
