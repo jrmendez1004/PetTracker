@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.pettracker.Adapters.CalendarAdapter;
 import com.example.pettracker.Adapters.DogsAdapter;
+import com.example.pettracker.Adapters.OwnersAdapter;
 import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Pet;
 import com.example.pettracker.Models.Task;
@@ -52,12 +53,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvCalFriday;
     private RecyclerView rvCalSaturday;
     private RecyclerView rvDogList;
+    private RecyclerView rvOwners;
     private Button switchCal;
     private Button btnLogout;
     private Button btnAddDog;
     private TextView calViewType;
     private ImageView ivAddTask;
     DogsAdapter dogsAdapter;
+    OwnersAdapter ownersAdapter;
     private CalendarAdapter calendarAdapterSun;
     private CalendarAdapter calendarAdapterMon;
     private CalendarAdapter calendarAdapterTue;
@@ -99,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
         rvCalFriday = (RecyclerView) findViewById(R.id.rvCalFriday);
         rvCalSaturday = (RecyclerView) findViewById(R.id.rvCalSaturday);
         rvDogList = (RecyclerView) findViewById(R.id.rvDogList);
+        rvOwners = (RecyclerView) findViewById(R.id.rvOwners);
         switchCal = (Button) findViewById(R.id.btnSwitchCal);
         calViewType = (TextView) findViewById(R.id.tvCalView);
         ivAddTask = (ImageView) findViewById(R.id.ivAddTask);
@@ -134,7 +138,10 @@ public class MainActivity extends AppCompatActivity {
         dogsAdapter = new DogsAdapter(this, pets);
         rvDogList.setAdapter(dogsAdapter);
         rvDogList.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        loadPets(ParseUser.getCurrentUser());
+
+        ownersAdapter = new OwnersAdapter(this, owners);
+        rvOwners.setAdapter(ownersAdapter);
+        rvOwners.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         calendarAdapterSun = new CalendarAdapter(this, sundayTasks);
         rvCalSunday.setAdapter(calendarAdapterSun);
@@ -165,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
         rvCalSaturday.setLayoutManager(new LinearLayoutManager(this));
 
         loadTasks(ParseUser.getCurrentUser());
+        loadPets(ParseUser.getCurrentUser());
 
         rvCalSunday.addItemDecoration(new DividerItemDecoration(rvCalSunday.getContext(), DividerItemDecoration.HORIZONTAL));
         rvCalSunday.addItemDecoration(new DividerItemDecoration(rvCalSunday.getContext(), DividerItemDecoration.VERTICAL));
@@ -209,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 if(e != null)
                     return;
                 owners.addAll(queryOwners);
+                ownersAdapter.notifyDataSetChanged();
 
                 //loads Tasks after owners loaded
                 ParseQuery<Task> query = ParseQuery.getQuery(Task.class);
@@ -401,9 +410,10 @@ public class MainActivity extends AppCompatActivity {
                     .setAction(R.string.snackbar_action, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            pets.add(petToDelete);
+                            pets.add(0,petToDelete);
                             petToDelete.saveInBackground();
                             dogsAdapter.notifyDataSetChanged();
+                            rvDogList.scrollToPosition(0);
                         }
                     })  // action text on the right side
                     .setActionTextColor(getResources().getColor(R.color.teal_200))
