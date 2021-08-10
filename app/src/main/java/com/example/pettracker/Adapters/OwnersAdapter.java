@@ -1,6 +1,7 @@
 package com.example.pettracker.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.example.pettracker.Activities.OwnerInfoActivity;
 import com.example.pettracker.Models.Owner;
 import com.example.pettracker.Models.Pet;
 import com.example.pettracker.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -75,6 +78,19 @@ public class OwnersAdapter extends RecyclerView.Adapter<OwnersAdapter.ViewHolder
                 tvOwnerName.setTextColor(itemView.getResources().getColor(R.color.teal_200));
             else if(owner.getColor().equals("purple"))
                 tvOwnerName.setTextColor(itemView.getResources().getColor(R.color.purple_200));
+
+            tvOwnerName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goOwnerDetails(owner);
+                }
+            });
+        }
+
+        private void goOwnerDetails(Owner owner) {//need to fix
+            Intent intent = new Intent(context, OwnerInfoActivity.class);
+            intent.putExtra("owners", Parcels.wrap(owner));
+            context.startActivity(intent);
         }
     }
 }

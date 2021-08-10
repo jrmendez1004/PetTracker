@@ -203,11 +203,6 @@ public class MainActivity extends AppCompatActivity {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     }
 
-    private void goOwnerDetails() {//need to fix
-        Intent intent = new Intent(this, OwnerInfoActivity.class);
-        startActivity(intent);
-    }
-
     private void loadTasks(ParseUser householdID) {
         ParseQuery<Owner> query = ParseQuery.getQuery(Owner.class);
         query.whereEqualTo(Owner.KEY_HOUSEHOLD_ID, householdID);
