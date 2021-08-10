@@ -42,6 +42,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 125;
+    private static final int TASK_REQUEST_CODE = 25;
     private RecyclerView rvCalSunday;
     private RecyclerView rvCalMonday;
     private RecyclerView rvCalTuesday;
@@ -267,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SetupTasksActivity.class);
             intent.putExtra("pets", Parcels.wrap(pets));
             intent.putExtra("owners", Parcels.wrap(owners));
-            startActivity(intent);
+            startActivityForResult(intent, TASK_REQUEST_CODE);
         }
         else {
             showTaskAlert();
@@ -387,22 +388,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            Pet pet = Parcels.unwrap(data.getParcelableExtra("petToDelete"));
-            pets.remove(pet);
-            pet.deleteInBackground();
+            Pet petToDelete = Parcels.unwrap(data.getParcelableExtra("petToDelete"));
+            for(Pet pet:pets) {
+                if(pet.getPetName().equals(petToDelete.getPetName()) && pet.getBreed().equals(petToDelete.getBreed())) {
+                    pet.deleteInBackground();
+                    pets.remove(pet);
+                }
+            }
+
             dogsAdapter.notifyDataSetChanged();
         }
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        calendarAdapterSun.notifyDataSetChanged();
-        calendarAdapterMon.notifyDataSetChanged();
-        calendarAdapterTue.notifyDataSetChanged();
-        calendarAdapterWed.notifyDataSetChanged();
-        calendarAdapterThu.notifyDataSetChanged();
-        calendarAdapterFri.notifyDataSetChanged();
-        calendarAdapterSat.notifyDataSetChanged();
+        if(requestCode == TASK_REQUEST_CODE && resultCode == RESULT_OK) {
+            calendarAdapterSun.notifyDataSetChanged();
+            calendarAdapterMon.notifyDataSetChanged();
+            calendarAdapterTue.notifyDataSetChanged();
+            calendarAdapterWed.notifyDataSetChanged();
+            calendarAdapterThu.notifyDataSetChanged();
+            calendarAdapterFri.notifyDataSetChanged();
+            calendarAdapterSat.notifyDataSetChanged();
+        }
     }
 }
